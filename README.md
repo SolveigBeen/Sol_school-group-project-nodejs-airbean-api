@@ -48,7 +48,9 @@ APIt använder följande databaser:
     * Kampanjerbjudande ska kunna skapas och sparas i egen databas.
     * Varor i kampanjerbjudande måste valideras.
 
-Utveckling av admin-gränssnitt för att hantera menyn
+ Följande databas har lagts till:
+* offerings   -  namn på varor, pris, id
+
 
 ## Installation ##
 
