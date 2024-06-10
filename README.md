@@ -2,7 +2,7 @@
 
 ## Project Description ##
 Examinerande uppgift i kurs Backend med NodeJs för YH utbildning Frontendutveckling på Folkuniversitetet.
-Uppgiftenbestår av två delar, en första del som görs i grupp och en andra del som gör individuellt.
+Uppgiften består av två delar, en första del som görs i grupp och en andra del som görs individuellt.
 
 ### Del 1 ###
 
