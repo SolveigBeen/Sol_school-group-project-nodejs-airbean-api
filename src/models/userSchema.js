@@ -1,3 +1,5 @@
+//  Schema for Customers and users.
+
 import Joi from 'joi';
 
 const userSchema = Joi.object({

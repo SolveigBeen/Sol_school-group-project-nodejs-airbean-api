@@ -1,1 +1,1 @@
-{"customerID":"","product":[{"title":"Mocha","desc":"En söt mocha med choklad och espresso.","price":55,"_id":"6ymMjHWMpLGChmJ6","quantity":1}],"_id":"GGUa5tyoy1C8di30"}
+{"products":[{"title":"Espresso","price":25,"quantity":2,"totalPrice":50},{"title":"Bryggkaffe","price":25,"quantity":3,"totalPrice":75}],"totalSum":125,"_id":"NSFuLBgR7TDyLLn1"}

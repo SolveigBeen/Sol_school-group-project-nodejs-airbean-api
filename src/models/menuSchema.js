@@ -1,3 +1,5 @@
+//  Schema for the Menu.  
+
 import Joi from 'joi';
 
 const menuItemSchema = Joi.object({

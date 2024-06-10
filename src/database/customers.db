@@ -1,2 +1,3 @@
 {"username":"Ada_Admin","password":"password","email":"ada@be.se","phone":"012","role":"admin","_id":"ABjpd99zbw6Ve9kw"}
 {"username":"sol","password":"password","email":"sol@be.se","phone":"0123456789","_id":"FqNGfFzk1n2oLK2g"}
+{"username":"guest","email":"guest@example.com","phone":"1234567890","_id":"y4aahnkxzrOUTiJ1"}
