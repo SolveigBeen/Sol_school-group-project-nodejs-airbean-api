@@ -1,50 +1,53 @@
-import { Router } from "express";
-import {
-  addToCart,
-  deleteOrder,
-  deleteItemInOrder,
-  placeOrder,
-  showCart,
-} from "../controller/cart.js";
-import checkProductExists from "../middleware/checkProductExists.js";
+import express from "express";
+import { getAllCarts, getCart, createCart, updateCart, deleteCart } from "../controller/cart.js";
+import checkIfProductExists from '../middleware/checkIfProductExists.js';
+import validateCart from '../middleware/validateCart.js';
 
-const router = Router();
+const router = express.Router();
 
-// router.get("/cart", showCart);
-router.get("/:id", showCart);
+//Show all carts 
+router.get('/',  async(req, res)=> {
+const carts = await getAllCarts();
+res.json({carts:carts});
+})
 
-router.post("/", checkProductExists, (req, res, next) => {
-  addToCart(req, res, next);
-});
-
-// Place order
-router.post("/order", placeOrder);
-
-//Delete order
-router.delete("/", async (req, res) => {
+//Show specific cart by entering id 
+router.get('/:id', async (req, res) => {
   try {
-    const deleteItem = await deleteOrder(req.body._id);
-    res.json({ message: "Item deleted successfully", item: deleteItem });
+    const cart = await getCart(req.params.id);
+    res.json({ cart: cart });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting item", error: error.message });
+    res.status(404).json({ error: error.message });
   }
 });
 
-//Delete item in order
-router.delete("/item", async (req, res) => {
+//Add product in a new cart. Check that product exist in menu. 
+router.post('/', validateCart, checkIfProductExists, async (req, res) => {
   try {
-    const deleteItem = await deleteItemInOrder(
-      req.body.cartID,
-      req.body.productID
-    );
-    res.json({ message: "Item deleted successfully", item: deleteItem });
+    const newCart = await createCart(req.body);
+    res.status(201).json(newCart);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting item", error: error.message });
+    res.status(400).json({ error: error.message });
   }
+});
+
+//Update a cart by identifying with id. Updates includes, adding new product, removing product or updating quantity.
+router.put('/:id', validateCart, checkIfProductExists, async (req, res) => {
+  try {
+    const cartId = req.params.id;
+    const updates = req.body;
+    const updatedCart = await updateCart(cartId, updates);
+    res.json({ message: "Cart updated", cart: updatedCart });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
+// Delete cart by id
+router.delete('/:id', (req,res)=> {
+  deleteCart(req.params.id);
+  res.json({message : "Cart removed."});
 });
 
 export default router;

@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { getOrdersByCustomerId, getOrderByOrderId } from "../controller/order.js";
-import authenticate from "../middleware/auth.js";
+import {  placeOrder, getOrdersByCustomerId, getOrderByOrderId } from "../controller/order.js";
+import {authenticate} from "../middleware/auth.js";
 
 const router = Router();
 
-//Sök order genom att ange order-id. Använd authenticate middleware för att kontrollera att användaren är inloggad.:
+// Place order
+router.post("/", placeOrder);
+
+//Visa order. Sök order genom att ange order-id. Använd authenticate middleware för att kontrollera att användaren är inloggad.:
 router.get("/:id", authenticate, async (req, res) => {
   try {
     const order = await getOrdersByCustomerId(req.params.id);

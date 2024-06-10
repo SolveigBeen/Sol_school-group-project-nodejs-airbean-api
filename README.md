@@ -19,10 +19,13 @@ Följande funktionalitet ingår:
 ####  Varukorg ####
 * användare ska kunna lägga vara från meny i en varukorg
 * användare ska kunna se innehållet i varukorg
-* användar ska kunna ta bort vara från varukorg
+* användar ska kunna uppdatera varukorg, lägga till, ta bort vara samt ändra kvantitet.
+* varukorgen ska visa totala summan för innehållet.
+  
 
 ####  Order ####
-* användare ska kunna lägga en order med innehållet i varukorgen
+* användare ska kunna lägga en order med innehållet i varukorgen.
+* när order läggs så tas varukorgen bort.
 * uppskattad/beräknad tid för leverans ska anges i order-bekräftelse
 * inloggad användare ska kunna se historik för tidigare beställningar
 
@@ -62,20 +65,20 @@ eller om Nodemon finns installerat:
 
 `npm run dev`
 
-## Test ##
+## Test del 1 ##
 
 Testa api-anrop genom Insomnia eller Postman.
 
-### 1. Som användare vill jag kunna skapa ett konto ###
+### 1.1 Som användare vill jag kunna skapa ett konto ###
 
 #### POST - /customer/register
 ##### Request
 ```
 {
-    "username": "andreas",
+    "username": "sol",
     "password": "password",
-    "email": "a@b.se",
-    "phone": "0731234567"
+    "email": "sol@be.se",
+    "phone": "0123456789"
 }
 ```
 ##### Response
@@ -83,40 +86,90 @@ Testa api-anrop genom Insomnia eller Postman.
 {
     "message": "User registered successfully",
     "user": {
-        "username": "andreas",
-        "email": "a@b.se",
-        "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+        "username": "sol",
+        "email": "sol@b.se",
+        "password": "password",
         "phone": "0731234567",
-        "_id": "COwTqeN5KqmJB5wB"
+        "_id": "FqNGfFzk1n2oLK2g"
     }
 }
 ```
 
-### 2. Som användare vill jag kunna logga in ###
+### 1.2. Som användare vill jag kunna logga in ###
 #### POST - /customer/login
 ##### Request
 ```
 {
-    "email": "a@b.se",
-    "password": "andreas"
+    "username": "sol",
+    "password": "password"
 }
 ```
 ##### Response
 ```
 {
-    "message": "User registered successfully",
+    "message": "Login successful",
     "user": {
-        "username": "andreas",
-        "email": "a@b.se",
-        "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-        "phone": "0731234567",
-        "_id": "COwTqeN5KqmJB5wB"
-    }
+        "username": "sol",
+        "password": "password",
+        "email": "sol@be.se",
+        "phone": "0123456789",
+        "_id": "FqNGfFzk1n2oLK2g"
+	}
 }
 ```
 
-### 3. Som användare vill jag se meny med alla kaffesorter som går att beställa ###
-#### GET - /info/menu
+### 1.3 Som användare vill jag kunna logga ut ###
+#### POST - /customer/logout
+###### Response
+```
+{
+	"message": "Logout successful"
+}
+```
+### 1.4 Som användare/administratör vill jag kunna ta bort/deleta ett användarkonto. ###
+Admin role är inte kopplad till detta fn. 
+#### DELETE - /customer/delete/<id>
+###### Response
+```
+{
+	"message": "User removed from database"
+}
+```
+
+### 1.5 Som användare/administratör vill jag kunna se alla användarkonton. ###
+Admin role är inte kopplad till detta fn. 
+#### GET - /customer/
+###### Response
+```
+{
+	[
+	{
+		"username": "Ada_Admin",
+		"password": "password",
+		"email": "ada@be.se",
+		"phone": "012",
+		"role": "admin",
+		"_id": "ABjpd99zbw6Ve9kw"
+	},
+	{
+		"username": "sol",
+		"password": "password",
+		"email": "sol@be.se",
+		"phone": "0123456789",
+		"_id": "FqNGfFzk1n2oLK2g"
+	},
+	{
+		"username": "guest",
+		"email": "guest@example.com",
+		"phone": "1234567890",
+		"_id": "y4aahnkxzrOUTiJ1"
+	}
+]
+}
+```
+
+### 1.6. Som användare vill jag se meny med alla kaffesorter som går att beställa ###
+#### GET - /menu
 ###### Response
 ```
 [
@@ -135,86 +188,175 @@ Testa api-anrop genom Insomnia eller Postman.
     [...]
 ```
 
-### 4. Som användare vill jag kunna lägga kaffesort från meny i en kundkorg ###
+
+### 1.7. Som användare vill jag kunna lägga kaffesort samt antal från meny i en kundkorg. Totala summan för innehållet visas i svar. ###
 #### POST - /cart
 ###### Request
 ```
 {
-  "product": "6ymMjHWMpLGChmJ6", // Mandatory, productID. Checks menu.db if the product exist.
-  "cartID": "", // Optional, new cart if empty, existing cart if it exists.
-  "customerID": "", // Optional, guest if empty.
-  "quantity": 1 // Optional, gets 1 if empty.
+  "products": [
+    { "title": "Mocha", "quantity": 2 },
+    { "title": "Bryggkaffe", "quantity": 3 }
+   ]
 }
 ```
 ###### Response
 ```
 {
-    "customerID": "",
-    "product": [
-        {
-            "title": "Mocha",
-            "desc": "En söt mocha med choklad och espresso.",
-            "price": 55,
-            "_id": "6ymMjHWMpLGChmJ6",
-            "quantity": 1
-        }
-    ],
-    "_id": "yHYB6NvAuAXa3CW2",
-    "instructions": "cartID would've been saved to session/cookie to be included in the next call"
-}
+	"message": "Cart created",
+	"cart": {
+		"products": [
+			{
+				"title": "Espresso",
+				"price": 25,
+				"quantity": 2,
+				"totalPrice": 50
+			},
+			{
+				"title": "Bryggkaffe",
+				"price": 25,
+				"quantity": 3,
+				"totalPrice": 75
+			}
+		],
+		"totalSum": 125,
+		"_id": "VaOxjZgcAqHGDg0G"
+	}
 ```
+### 1.8. Som administratör vill jag se samtliga kundkorgar ###
+Admin role är inte kopplad till detta fn.
+#### GET - /cart/   ####
+###### Response ###### 
+ ```
+{
+	"carts": [
+		{
+			"products": [
+				{
+					"title": "Mocha",
+					"price": 55,
+					"quantity": 2,
+					"totalPrice": 110
+				},
+				{
+					"title": "Bryggkaffe",
+					"price": 25,
+					"quantity": 1,
+					"totalPrice": 25
+				}
+			],
+			"totalSum": 135,
+			"_id": "Pnx5OBONxfOKDsHC"
+		},
+        {
+			"products": [
+				{
+					"title": "Mocha",
+					"price": 55,
+					"quantity": 1,
+					"totalPrice": 55
+				}
+			],
+			"totalSum": 55,
+			"_id": "zn7lPVJJ7r0Fm0tO"
+		}
+ ```
 
-### 5. Som användare vill jag se innehåll i kundkorg ###
-#### GET - /cart/:id
-###### Response
+### 1.9. Som administratör vill jag  kunna ta bort kundkorg ###
+Admin role är inte kopplad till detta fn. Kundkorgens id (US-1.8) används som identifikation.
+#### DELETE - /cart/<cartID>   ####
+###### Response ###### 
+ ```{
+	"message": "Cart removed."
+}
+ ```
+### 1.10. Som användare vill jag se innehållet i min kundkorg ###
+Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.8).
+#### GET - /cart/<cartID> ####
+###### Response ###### 
 ```
 {
-    "customerID": "ehLEGwSC1FzobAHN",
-    "product": [
-        {
-            "title": "Macchiato",
-            "desc": "En macchiato med en skvätt mjölk.",
-            "price": 30,
-            "_id": "dy1JqGCeAYWaJqri",
-            "quantity": 10
-        },
-        {
-            "title": "Cappuccino",
-            "desc": "En krämig cappuccino med skummad mjölk.",
-            "price": 45,
-            "_id": "nG7UZ7wTTM0wm64Q",
-            "quantity": 4
-        }
-    ],
-    "_id": "Acwd7ENmZXDGozIg",
-    "price": 480
+	"cart": {
+		"products": [
+			{
+				"title": "Mocha",
+				"price": 55,
+				"quantity": 2,
+				"totalPrice": 110
+			},
+			{
+				"title": "Bryggkaffe",
+				"price": 25,
+				"quantity": 1,
+				"totalPrice": 25
+			}
+		],
+		"totalSum": 135,
+		"_id": "Pnx5OBONxfOKDsHC"
+	}
 }
 ```
 
-### 6. Som användare vill jag kunna ta bort vara ur kundkorgen ###
-#### DELETE - /cart/item
+### 1.11. Som användare vill jag kunna uppdatera kundkorg ###
+Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg identifieras i anrop med sitt id (US-1.8). Uppdateringar skickas som body-request.
+#### PUT - /cart/<cartID>
 ###### Request
 ```
-{
-  "cartID": "vVu2PrXxomKcrtQt",
-  "productID" : "SjwGh9EVaYWtIzs7"
-}
+		{
+			"products": [
+				{
+					"title": "Mocha",
+					"quantity": 2
+				},
+				{
+					"title": "Bryggkaffe",
+					"quantity": 3
+				},
+					{
+					"title": "Espresso",
+					"quantity": 1
+				}
+				]
+		}
 ```
 ##### Response
 ```
 {
-    "message": "Item deleted successfully"
+	"message": "Cart updated",
+	"cart": {
+		"cart": 1,
+		"products": [
+			{
+				"title": "Mocha",
+				"price": 55,
+				"quantity": 2,
+				"totalPrice": 110
+			},
+			{
+				"title": "Bryggkaffe",
+				"price": 25,
+				"quantity": 3,
+				"totalPrice": 75
+			},
+			{
+				"title": "Espresso",
+				"price": 25,
+				"quantity": 1,
+				"totalPrice": 25
+			}
+		],
+		"totalSum": 210
+	}
 }
 ```
 
-### 7. Som användare vill jag kunna skapa en order med varorna i kundkorgen. Omanvändaren ej är inloggad krävs att användaren även bifogar mail-adress och telefonnummer. ###
-#### POST - /cart/order
+### 1.12. Som användare vill jag kunna skapa en order med varorna i kundkorgen. Om användaren ej är inloggad krävs att användaren även bifogar mail-adress och telefonnummer. ###
+#### POST - /orders
 ##### Request
 ###### Guest
 ```
 {
-  "customerID": null,
-  "cartID": "Acwd7ENmZXDGozIg",
+   "cartID": "TeHTFotxCFzconZo",
   "guestInfo": {
     "email": "guest@example.com",
     "phone": "1234567890"
@@ -226,42 +368,39 @@ Testa api-anrop genom Insomnia eller Postman.
 {
   "customerID": "DzbWOAIZTDQUyoQB",
   "cartID": "Acwd7ENmZXDGozIg",
-  "guestInfo": "null"
 }
 ```
 ##### Response
 ```
 {
-    "message": "Order placed successfully",
-    "order": {
-        "customerID": "3CFuQELPvlVoLZfz",
-        "cartID": "Acwd7ENmZXDGozIg",
-        "cartProducts": [
-            {
-                "title": "Macchiato",
-                "desc": "En macchiato med en skvätt mjölk.",
-                "price": 30,
-                "_id": "dy1JqGCeAYWaJqri",
-                "quantity": 10
-            },
-            {
-                "title": "Cappuccino",
-                "desc": "En krämig cappuccino med skummad mjölk.",
-                "price": 45,
-                "_id": "nG7UZ7wTTM0wm64Q",
-                "quantity": 4
-            }
-        ],
-        "price": 480,
-        "date": "2024-06-03 15:07:17",
-        "estimatedDelivery": "2024-06-03 15:27:17",
-        "_id": "si1ip4tQsAh8K3OL"
-    }
+	"message": "Order placed successfully",
+	"order": {
+		"customerID": "y4aahnkxzrOUTiJ1",
+		"cartID": "TeHTFotxCFzconZo",
+		"cartProducts": [
+			{
+				"title": "Mocha",
+				"price": 55,
+				"quantity": 1,
+				"totalPrice": 55
+			},
+			{
+				"title": "Bryggkaffe",
+				"price": 25,
+				"quantity": 3,
+				"totalPrice": 75
+			}
+		],
+		"totalSum": 130,
+		"date": "2024-06-10T10:49:47.701Z",
+		"estimatedDelivery": "13:09",
+		"_id": "YgtFeq4OcWsHuXxl"
+	}
 }
 ```
 
-### 8. Som användare vill få information om när ordern levereras. ###
-#### GET - /orders/confirmation/:id    (order-id)
+### 1.13. Som användare vill jag få information om när ordern levereras. ###
+#### GET - /orders/confirmation/<cartId>  
 ##### Response
 ```
 {
@@ -283,9 +422,9 @@ Testa api-anrop genom Insomnia eller Postman.
 }
 ```
 
-### 9. Som inloggad användare ska jag kunna se orderhistorik för alla tidigare köp jag gjort. ###
-Logga in som i punkt 2.
-#### GET - /orders/:id   
+### 1.14. Som inloggad användare ska jag kunna se orderhistorik för alla tidigare köp jag gjort. ###
+Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas från US 1.5)
+#### GET - /orders/<customerId>  
 ##### Response
 ```
 {
@@ -318,7 +457,7 @@ Logga in som i punkt 2.
 }
 ```
 
-### 10. Som användare vill jag kunna läsa mer om företaget. ###
+### 1.16. Som användare vill jag kunna läsa mer om företaget. ###
 #### GET - /info
 ##### Response
 ```
@@ -327,10 +466,176 @@ Logga in som i punkt 2.
 }
 ```
 
-  
-  
-  
-  
+## Test del 2 ##
+
+### 2.1. Som användare vill jag kunna logga in med rollen "admin" och få access till speciella operationer på sidan. ###
+#### POST - /customer/login  ####
+##### Request  ##### 
+```
+{
+  	"username": "Ada Admin", 
+	"password": "password"
+}
+```
+##### Response  ##### 
+```
+{
+	"message": "Login successful",
+	"user": {
+		"username": "admin",
+		"password": "password",
+		"email": "adm@ba.se",
+		"phone": "012",
+		"role": "admin",
+		"_id": "1tGyd9vve7pNaHuf"
+	}
+}
+```
+### 2.2. Som admin vill jag kunna lägga in ny produkt på menyn. En 'createdAt' parameter adderas. ###
+Formatet för produktegenskaperna title, desc, price kontrolleras
+#### POST - /menu  ####
+##### Request  ##### 
+```
+{
+		"title": "Bryggarekaffe",
+		"desc": "En kopp med husets bryggmalet.",
+		"price": 25
+	}
+```
+##### Response ##### 
+```
+{
+	"message": "Menu item added successfully",
+	"item": {
+		"title": "Bryggarekaffe",
+		"desc": "En kopp med husets bryggmalet.",
+		"price": 25,
+		"createdAt": "2024-06-08T17:59:45.402Z",
+		"_id": "yfU4UjEmgEhMpuVH"
+	}
+}
+```
+### 2.3. Som admin vill jag kunna ändra innehållet för ny produkt på menyn. En 'modifiedAt' parameter skapas. ###
+
+#### POST - /menu/Bryggarekaffe ####
+##### Request #####
+ ```
+{
+		"desc": "En kopp med husets bryggmalet.",
+		"price": 32
+	}
+``` 
+ ##### Response #####
+``` 
+{
+	"message": "Menu updated successfully",
+	"item": {
+		"title": "Bryggarekaffe",
+		"desc": "En stor varm kopp med husets bryggmalet.",
+		"price": 25,
+		"createdAt": "2024-06-08T17:48:42.001Z",
+		"_id": "iK6866lHhxuQgH6A",
+		"modifiedAt": "2024-06-10T13:21:39.649Z"
+	}
+}
+``` 
+
+### 2.4. Som admin vill jag kunna ta bort en produkt från menyn ###
+#### DELETE - /menu/<title> ####
+##### Response #####
+```
+{
+	"message": "Menu item deleted successfully"
+}
+```
+
+### 2.5. Som admin vill jag kunna skapa kampanjerbjudande med produkter från menyn ###
+Produkter som ingår valideras att dessa produkter finns i menyn.
+#### POST - /admin/offering ####
+##### Request #####
+ ```
+{
+	"title": "Gustav Adolf",
+	"product_1":"Gustav Adolf Bakelse",
+	"product_2":"Bryggkaffe",
+	"price":40
+	}
+``` 
+##### Response #####
+```
+{
+	"message": "New offering added successfully"
+}
+```
+
+### 2.6. Som admin vill jag kunna se tillgängliga kampanjerbjudande  ###
+#### GET - /admin/offering #### 
+##### Response #####
+```
+[
+	{
+		"title": "Gustav Adolf",
+		"products": [
+			"Gustav Adolf Bakelse",
+			"Bryggkaffe"
+		],
+		"price": 40,
+		"_id": "QhA4zLJiNPGNyd2O"
+	}
+]
+```
+### 2.7. Som admin vill jag kunna ta bort kampanjerbjudande från databas. ###
+
+#### DELETE - /admin/offering/<id> #### 
+##### Response #####
+```
+[
+{
+	"message": "Offering deleted successfully"
+}
+]
+```
+
+## 3. Test Error handling ##
+ ### 3.1. Skapa konto: Formatet uppfyller ej krav ### 
+ #### POST - /customer/register
+##### Request
+```
+{
+    "username": "Ada_Admin",
+    "password": "123",
+    "email": "ada@be.se",
+    "phone": "012",
+    "role":"admin"
+}
+```
+##### Response
+```
+{
+	"error": "\"password\" length must be at least 6 characters long"
+}
+```
+### 3.2. Användare som ej är inloggad nekas se orderhistorik . ###
+#### GET - /orders/<customerId>  
+##### Response
+```
+{
+	"success": false,
+	"message": "You need to be logged in to view the orderhistory",
+	"status": 401
+}
+```
+
+### 3.3. Användare som ej är inloggad som admin nekas göra ändringar på meny. ###
+#### POST - /menu  
+##### Response
+```
+{
+	"success": false,
+	"message": "You need to be an admin to perform this action",
+	"status": 401
+}
+```
   
 
 
