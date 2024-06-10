@@ -491,7 +491,8 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
 	}
 }
 ```
-### 2.2. Som admin vill jag kunna lägga in ny produkt på menyn ###
+### 2.2. Som admin vill jag kunna lägga in ny produkt på menyn. En 'createdAt' parameter adderas. ###
+Formatet för produktegenskaperna title, desc, price kontrolleras
 #### POST - /menu  ####
 ##### Request  ##### 
 ```
@@ -514,7 +515,7 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
 	}
 }
 ```
-### 2.3. Som admin vill jag kunna ändra innehållet för ny produkt på menyn ###
+### 2.3. Som admin vill jag kunna ändra innehållet för ny produkt på menyn. En 'modifiedAt' parameter skapas. ###
 
 #### POST - /menu/Bryggarekaffe ####
 ##### Request #####
@@ -527,12 +528,14 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
  ##### Response #####
 ``` 
 {
-	"message": "Menu item added successfully",
+	"message": "Menu updated successfully",
 	"item": {
 		"title": "Bryggarekaffe",
-		"desc": "En stor kopp med husets bryggmalet.",
-		"price": 32,
-		"createdAt": "2024-06-09T11:35:26.166Z"
+		"desc": "En stor varm kopp med husets bryggmalet.",
+		"price": 25,
+		"createdAt": "2024-06-08T17:48:42.001Z",
+		"_id": "iK6866lHhxuQgH6A",
+		"modifiedAt": "2024-06-10T13:21:39.649Z"
 	}
 }
 ``` 
@@ -547,6 +550,7 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
 ```
 
 ### 2.5. Som admin vill jag kunna skapa kampanjerbjudande med produkter från menyn ###
+Produkter som ingår valideras att dessa produkter finns i menyn.
 #### POST - /admin/offering ####
 ##### Request #####
  ```
@@ -581,17 +585,57 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
 ]
 ```
 ### 2.7. Som admin vill jag kunna ta bort kampanjerbjudande från databas. ###
+
 #### DELETE - /admin/offering/<id> #### 
 ##### Response #####
 ```
 [
-	{
-		
-	}
+{
+	"message": "Offering deleted successfully"
+}
 ]
 ```
-  
-  
+
+## 3. Test Error handling ##
+ ### 3.1. Skapa konto: Formatet uppfyller ej krav ### 
+ #### POST - /customer/register
+##### Request
+```
+{
+    "username": "Ada_Admin",
+    "password": "123",
+    "email": "ada@be.se",
+    "phone": "012",
+    "role":"admin"
+}
+```
+##### Response
+```
+{
+	"error": "\"password\" length must be at least 6 characters long"
+}
+```
+### 3.2. Användare som ej är inloggad nekas se orderhistorik . ###
+#### GET - /orders/<customerId>  
+##### Response
+```
+{
+	"success": false,
+	"message": "You need to be logged in to view the orderhistory",
+	"status": 401
+}
+```
+
+### 3.3. Användare som ej är inloggad som admin nekas göra ändringar på meny. ###
+#### POST - /menu  
+##### Response
+```
+{
+	"success": false,
+	"message": "You need to be an admin to perform this action",
+	"status": 401
+}
+```
   
 
 
