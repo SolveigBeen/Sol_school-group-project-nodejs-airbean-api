@@ -41,10 +41,14 @@ APIt använder följande databaser:
 
 ### Del 2 ###
 * Följande funktioner ska kunna göras endast av person med 'admin'rättighet:
+  
+####  Meny ####
     * Nya produkter ska kunna läggas till i menyn. Egenskapen 'createdAt' ska läggas till
     * Befintliga produkter i menyn ska kunna modifieras. Egenskapen 'modifeidAt' ska läggas till
     * Produkt från menyn ska kunna deletas.
     * Felmeddelande ska returneras vid behov.
+    
+####  Kampanjerbjudande ####
     * Kampanjerbjudande ska kunna skapas och sparas i egen databas.
     * Varor i kampanjerbjudande måste valideras.
 
