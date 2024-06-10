@@ -19,10 +19,13 @@ Följande funktionalitet ingår:
 ####  Varukorg ####
 * användare ska kunna lägga vara från meny i en varukorg
 * användare ska kunna se innehållet i varukorg
-* användar ska kunna ta bort vara från varukorg
+* användar ska kunna uppdatera varukorg, lägga till, ta bort vara samt ändra kvantitet.
+* varukorgen ska visa totala summan för innehållet.
+  
 
 ####  Order ####
-* användare ska kunna lägga en order med innehållet i varukorgen
+* användare ska kunna lägga en order med innehållet i varukorgen.
+* när order läggs så tas varukorgen bort.
 * uppskattad/beräknad tid för leverans ska anges i order-bekräftelse
 * inloggad användare ska kunna se historik för tidigare beställningar
 
@@ -115,7 +118,7 @@ Testa api-anrop genom Insomnia eller Postman.
 }
 ```
 
-### 1.2.1 Som användare vill jag kunna logga ut ###
+### 1.3 Som användare vill jag kunna logga ut ###
 #### POST - /customer/logout
 ###### Response
 ```
@@ -123,7 +126,8 @@ Testa api-anrop genom Insomnia eller Postman.
 	"message": "Logout successful"
 }
 ```
-### 1.2.2 Som användare vill jag kunna ta bort/deleta ett användarkonto. ###
+### 1.4 Som användare/administratör vill jag kunna ta bort/deleta ett användarkonto. ###
+Admin role är inte kopplad till detta fn. 
 #### DELETE - /customer/delete/<id>
 ###### Response
 ```
@@ -132,7 +136,39 @@ Testa api-anrop genom Insomnia eller Postman.
 }
 ```
 
-### 3. Som användare vill jag se meny med alla kaffesorter som går att beställa ###
+### 1.5 Som användare/administratör vill jag kunna se alla användarkonton. ###
+Admin role är inte kopplad till detta fn. 
+#### GET - /customer/
+###### Response
+```
+{
+	[
+	{
+		"username": "Ada_Admin",
+		"password": "password",
+		"email": "ada@be.se",
+		"phone": "012",
+		"role": "admin",
+		"_id": "ABjpd99zbw6Ve9kw"
+	},
+	{
+		"username": "sol",
+		"password": "password",
+		"email": "sol@be.se",
+		"phone": "0123456789",
+		"_id": "FqNGfFzk1n2oLK2g"
+	},
+	{
+		"username": "guest",
+		"email": "guest@example.com",
+		"phone": "1234567890",
+		"_id": "y4aahnkxzrOUTiJ1"
+	}
+]
+}
+```
+
+### 1.6. Som användare vill jag se meny med alla kaffesorter som går att beställa ###
 #### GET - /menu
 ###### Response
 ```
@@ -153,7 +189,7 @@ Testa api-anrop genom Insomnia eller Postman.
 ```
 
 
-### 4. Som användare vill jag kunna lägga kaffesort från meny i en kundkorg ###
+### 1.7. Som användare vill jag kunna lägga kaffesort samt antal från meny i en kundkorg. Totala summan för innehållet visas i svar. ###
 #### POST - /cart
 ###### Request
 ```
@@ -187,7 +223,7 @@ Testa api-anrop genom Insomnia eller Postman.
 		"_id": "VaOxjZgcAqHGDg0G"
 	}
 ```
-### 5. Som administratör vill jag se samtliga kundkorgar ###
+### 1.8. Som administratör vill jag se samtliga kundkorgar ###
 Admin role är inte kopplad till detta fn.
 #### GET - /cart/   ####
 ###### Response ###### 
@@ -226,17 +262,17 @@ Admin role är inte kopplad till detta fn.
 		}
  ```
 
-### 5. Som administratör vill jag  kunna deleta kundkorg ###
-Admin role är inte kopplad till detta fn.
-#### DELETE - /cart/id   ####
+### 1.9. Som administratör vill jag  kunna ta bort kundkorg ###
+Admin role är inte kopplad till detta fn. Kundkorgens id (US-1.8) används som identifikation.
+#### DELETE - /cart/<cartID>   ####
 ###### Response ###### 
  ```{
 	"message": "Cart removed."
 }
  ```
-### 5. Som användare vill jag se innehåll i kundkorg ###
-Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.6).
-#### GET - /cart/:id ####
+### 1.10. Som användare vill jag se innehållet i min kundkorg ###
+Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.8).
+#### GET - /cart/<cartID> ####
 ###### Response ###### 
 ```
 {
@@ -261,9 +297,9 @@ Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.6
 }
 ```
 
-### 6. Som användare vill jag kunna uppdatera kundkorg ###
-Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Skickas som body-request.
-#### PUT - /cart/id
+### 1.11. Som användare vill jag kunna uppdatera kundkorg ###
+Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg identifieras i anrop med sitt id (US-1.8). Uppdateringar skickas som body-request.
+#### PUT - /cart/<cartID>
 ###### Request
 ```
 		{
@@ -314,7 +350,7 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Skickas 
 }
 ```
 
-### 7. Som användare vill jag kunna skapa en order med varorna i kundkorgen. Om användaren ej är inloggad krävs att användaren även bifogar mail-adress och telefonnummer. ###
+### 1.12. Som användare vill jag kunna skapa en order med varorna i kundkorgen. Om användaren ej är inloggad krävs att användaren även bifogar mail-adress och telefonnummer. ###
 #### POST - /orders
 ##### Request
 ###### Guest
@@ -363,8 +399,8 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Skickas 
 }
 ```
 
-### 8. Som användare vill få information om när ordern levereras. ###
-#### GET - /orders/confirmation/:id    (order-id)
+### 1.13. Som användare vill jag få information om när ordern levereras. ###
+#### GET - /orders/confirmation/<cartId>  
 ##### Response
 ```
 {
@@ -386,9 +422,9 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Skickas 
 }
 ```
 
-### 9. Som inloggad användare ska jag kunna se orderhistorik för alla tidigare köp jag gjort. ###
-Logga in som i punkt 2.
-#### GET - /orders/:id   
+### 1.14. Som inloggad användare ska jag kunna se orderhistorik för alla tidigare köp jag gjort. ###
+Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas från US 1.5)
+#### GET - /orders/<customerId>  
 ##### Response
 ```
 {
@@ -421,7 +457,7 @@ Logga in som i punkt 2.
 }
 ```
 
-### 10. Som användare vill jag kunna läsa mer om företaget. ###
+### 1.16. Som användare vill jag kunna läsa mer om företaget. ###
 #### GET - /info
 ##### Response
 ```
@@ -437,7 +473,7 @@ Logga in som i punkt 2.
 ##### Request  ##### 
 ```
 {
-  "username": "Ada Admin", 
+  	"username": "Ada Admin", 
 	"password": "password"
 }
 ```
@@ -502,12 +538,57 @@ Logga in som i punkt 2.
 ``` 
 
 ### 2.4. Som admin vill jag kunna ta bort en produkt från menyn ###
-#### DELETE - /menu/Bryggarekaffe ####
+#### DELETE - /menu/<title> ####
 ##### Response #####
 ```
 {
 	"message": "Menu item deleted successfully"
 }
+```
+
+### 2.5. Som admin vill jag kunna skapa kampanjerbjudande med produkter från menyn ###
+#### POST - /admin/offering ####
+##### Request #####
+ ```
+{
+	"title": "Gustav Adolf",
+	"product_1":"Gustav Adolf Bakelse",
+	"product_2":"Bryggkaffe",
+	"price":40
+	}
+``` 
+##### Response #####
+```
+{
+	"message": "New offering added successfully"
+}
+```
+
+### 2.6. Som admin vill jag kunna se tillgängliga kampanjerbjudande  ###
+#### GET - /admin/offering #### 
+##### Response #####
+```
+[
+	{
+		"title": "Gustav Adolf",
+		"products": [
+			"Gustav Adolf Bakelse",
+			"Bryggkaffe"
+		],
+		"price": 40,
+		"_id": "QhA4zLJiNPGNyd2O"
+	}
+]
+```
+### 2.7. Som admin vill jag kunna ta bort kampanjerbjudande från databas. ###
+#### DELETE - /admin/offering/<id> #### 
+##### Response #####
+```
+[
+	{
+		
+	}
+]
 ```
   
   
