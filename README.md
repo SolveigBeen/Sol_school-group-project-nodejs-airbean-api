@@ -83,11 +83,11 @@ eller om Nodemon finns installerat:
 ## Test del 1 ##
 
 Testa api-anrop genom Insomnia eller Postman.
-
+##  Inlogg och registrering ##
 ### 1.1 Som användare vill jag kunna skapa ett konto ###
 
-#### POST - /customer/register
-##### Request
+#### POST - /customer/register ####
+##### Request #####
 ```
 {
     "username": "sol",
@@ -96,7 +96,7 @@ Testa api-anrop genom Insomnia eller Postman.
     "phone": "0123456789"
 }
 ```
-##### Response
+##### Response  #####
 ```
 {
     "message": "User registered successfully",
@@ -111,15 +111,15 @@ Testa api-anrop genom Insomnia eller Postman.
 ```
 
 ### 1.2. Som användare vill jag kunna logga in ###
-#### POST - /customer/login
-##### Request
+#### POST - /customer/login  #### 
+##### Request #####
 ```
 {
     "username": "sol",
     "password": "password"
 }
 ```
-##### Response
+##### Response  #####
 ```
 {
     "message": "Login successful",
@@ -134,8 +134,8 @@ Testa api-anrop genom Insomnia eller Postman.
 ```
 
 ### 1.3 Som användare vill jag kunna logga ut ###
-#### POST - /customer/logout
-###### Response
+#### POST - /customer/logout ####
+###### Response  ###### 
 ```
 {
 	"message": "Logout successful"
@@ -143,8 +143,8 @@ Testa api-anrop genom Insomnia eller Postman.
 ```
 ### 1.4 Som användare/administratör vill jag kunna ta bort/deleta ett användarkonto. ###
 Admin role är inte kopplad till detta fn. 
-#### DELETE - /customer/delete/'id'
-###### Response
+#### DELETE - /customer/delete/'id' #####
+###### Response ######
 ```
 {
 	"message": "User removed from database"
@@ -153,8 +153,8 @@ Admin role är inte kopplad till detta fn.
 
 ### 1.5 Som användare/administratör vill jag kunna se alla användarkonton. ###
 Admin role är inte kopplad till detta fn. 
-#### GET - /customer
-###### Response
+#### GET - /customer ####
+###### Response ###### 
 ```
 {
 	[
@@ -182,10 +182,10 @@ Admin role är inte kopplad till detta fn.
 ]
 }
 ```
-
+##  Meny ##
 ### 1.6. Som användare vill jag se meny med alla kaffesorter som går att beställa ###
-#### GET - /menu
-###### Response
+#### GET - /menu ####
+###### Response ######
 ```
 [
     {
@@ -203,10 +203,10 @@ Admin role är inte kopplad till detta fn.
     [...]
 ```
 
-
+##  Varukorg ##
 ### 1.7. Som användare vill jag kunna lägga kaffesort samt antal från meny i en kundkorg. Totala summan för innehållet visas i svar. ###
-#### POST - /cart
-###### Request
+#### POST - /cart ####
+###### Request ######
 ```
 {
   "products": [
@@ -215,7 +215,7 @@ Admin role är inte kopplad till detta fn.
    ]
 }
 ```
-###### Response
+###### Response ######
 ```
 {
 	"message": "Cart created",
@@ -314,8 +314,8 @@ Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.8
 
 ### 1.11. Som användare vill jag kunna uppdatera kundkorg ###
 Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg identifieras i anrop med sitt id (US-1.8). Uppdateringar skickas som body-request.
-#### PUT - /cart/'cartID'
-###### Request
+#### PUT - /cart/'cartID' ####
+###### Request ######
 ```
 		{
 			"products": [
@@ -334,7 +334,7 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
 				]
 		}
 ```
-##### Response
+##### Response  ######
 ```
 {
 	"message": "Cart updated",
@@ -364,11 +364,11 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
 	}
 }
 ```
-
+##  Order ##
 ### 1.12. Som användare vill jag kunna skapa en order med varorna i kundkorgen. Om användaren ej är inloggad krävs att användaren även bifogar mail-adress och telefonnummer. ###
-#### POST - /orders
-##### Request
-###### Guest
+#### POST - /orders ####
+##### Request #####
+###### Guest  ######
 ```
 {
    "cartID": "TeHTFotxCFzconZo",
@@ -378,14 +378,14 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
   }
 }
 ```
-###### User
+###### User  ######
 ```
 {
   "customerID": "DzbWOAIZTDQUyoQB",
   "cartID": "Acwd7ENmZXDGozIg",
 }
 ```
-##### Response
+##### Response  ######
 ```
 {
 	"message": "Order placed successfully",
@@ -415,8 +415,8 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
 ```
 
 ### 1.13. Som användare vill jag få information om när ordern levereras. ###
-#### GET - /orders/confirmation/'orderId'  
-##### Response
+#### GET - /orders/confirmation/'orderId'  #### 
+##### Response ######
 ```
 {
     "customerID": "kFgt740aCqbHJLbC",
@@ -439,8 +439,8 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
 
 ### 1.14. Som inloggad användare ska jag kunna se orderhistorik för alla tidigare köp jag gjort. ###
 Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas från US 1.5)
-#### GET - /orders/'customerId'  
-##### Response
+#### GET - /orders/'customerId'   #####
+##### Response  ######
 ```
 {
     "order": [
@@ -471,10 +471,10 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
     ]
 }
 ```
-
+##  About ##
 ### 1.16. Som användare vill jag kunna läsa mer om företaget. ###
-#### GET - /info
-##### Response
+#### GET - /info ####
+##### Response ######
 ```
 {
     "info": "AirBean levererar kaffe med hjälp av drönare direkt till din dörr via en smidig app. Vi kombinerar avancerad teknologi med en passion för kaffe för en unik och effektiv upplevelse. Våra eldrivna drönare är energieffektiva och minskar utsläppen jämfört med traditionella leveransfordon. Optimerade leveransrutter minskar dessutom onödiga flygningar. Vi erbjuder högkvalitativt kaffe från certifierade ekologiska och fair trade-odlare. Detta säkerställer en etisk produktion och en överlägsen smak i varje kopp. Välj AirBean för en hållbar och bekväm kaffeupplevelse med gott samvete."
@@ -482,7 +482,7 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
 ```
 
 ## Test del 2 ##
-
+## Logga in som admin ##
 ### 2.1. Som användare vill jag kunna logga in med rollen "admin" och få access till speciella operationer på sidan. ###
 #### POST - /customer/login  ####
 ##### Request  ##### 
@@ -506,6 +506,7 @@ Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas f
 	}
 }
 ```
+## Meny ##
 ### 2.2. Som admin vill jag kunna lägga in ny produkt på menyn. En 'createdAt' parameter adderas. ###
 Formatet för produktegenskaperna title, desc, price kontrolleras
 #### POST - /menu  ####
@@ -531,7 +532,6 @@ Formatet för produktegenskaperna title, desc, price kontrolleras
 }
 ```
 ### 2.3. Som admin vill jag kunna ändra innehållet för ny produkt på menyn. En 'modifiedAt' parameter skapas. ###
-
 #### POST - /menu/Bryggarekaffe ####
 ##### Request #####
  ```
@@ -563,7 +563,7 @@ Formatet för produktegenskaperna title, desc, price kontrolleras
 	"message": "Menu item deleted successfully"
 }
 ```
-
+##  Kampanjerbjudande ##
 ### 2.5. Som admin vill jag kunna skapa kampanjerbjudande med produkter från menyn ###
 Produkter som ingår valideras att dessa produkter finns i menyn.
 #### POST - /admin/offering ####
@@ -620,8 +620,8 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 
 ## 3. Test Error handling ##
  ### 3.1. Skapa konto: Formatet uppfyller ej krav ### 
- #### POST - /customer/register
-##### Request
+ #### POST - /customer/register  #####
+##### Request  ######
 ```
 {
     "username": "Ada_Admin",
@@ -631,15 +631,15 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
     "role":"admin"
 }
 ```
-##### Response
+##### Response ######
 ```
 {
 	"error": "\"password\" length must be at least 6 characters long"
 }
 ```
 ### 3.2. Användare som ej är inloggad nekas se orderhistorik . ###
-#### GET - /orders/'customerId'  
-##### Response
+#### GET - /orders/'customerId' #####  
+##### Response ######
 ```
 {
 	"success": false,
@@ -649,8 +649,8 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 ```
 
 ### 3.3. Användare som ej är inloggad som admin nekas göra ändringar på meny. ###
-#### POST - /menu  
-##### Response
+#### POST - /menu   ####
+##### Response ######
 ```
 {
 	"success": false,
@@ -660,8 +660,8 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 ```
 
 ### 3.4. Endast produkter som finns i menyn kan läggas in i kampanjerbjudande. ###
-#### POST - /admin/offering 
-##### Request
+#### POST - /admin/offering  ####
+##### Request  ######
 ```
 {
 	"title": "Kungligt",
@@ -670,7 +670,7 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 	"price":40
 	}
 ```
-##### Response
+##### Response ######
 ```
 {
 	"error": "One or more products are not available"
