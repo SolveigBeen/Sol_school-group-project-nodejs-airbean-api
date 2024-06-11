@@ -143,7 +143,7 @@ Testa api-anrop genom Insomnia eller Postman.
 ```
 ### 1.4 Som användare/administratör vill jag kunna ta bort/deleta ett användarkonto. ###
 Admin role är inte kopplad till detta fn. 
-#### DELETE - /customer/delete/<id>
+#### DELETE - /customer/delete/'id'
 ###### Response
 ```
 {
@@ -153,7 +153,7 @@ Admin role är inte kopplad till detta fn.
 
 ### 1.5 Som användare/administratör vill jag kunna se alla användarkonton. ###
 Admin role är inte kopplad till detta fn. 
-#### GET - /customer/
+#### GET - /customer
 ###### Response
 ```
 {
@@ -240,7 +240,7 @@ Admin role är inte kopplad till detta fn.
 ```
 ### 1.8. Som administratör vill jag se samtliga kundkorgar ###
 Admin role är inte kopplad till detta fn.
-#### GET - /cart/   ####
+#### GET - /cart   ####
 ###### Response ###### 
  ```
 {
@@ -279,7 +279,7 @@ Admin role är inte kopplad till detta fn.
 
 ### 1.9. Som administratör vill jag  kunna ta bort kundkorg ###
 Admin role är inte kopplad till detta fn. Kundkorgens id (US-1.8) används som identifikation.
-#### DELETE - /cart/<cartID>   ####
+#### DELETE - /cart/'cartID'   ####
 ###### Response ###### 
  ```{
 	"message": "Cart removed."
@@ -287,7 +287,7 @@ Admin role är inte kopplad till detta fn. Kundkorgens id (US-1.8) används som 
  ```
 ### 1.10. Som användare vill jag se innehållet i min kundkorg ###
 Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.8).
-#### GET - /cart/<cartID> ####
+#### GET - /cart/'cartID' ####
 ###### Response ###### 
 ```
 {
@@ -314,7 +314,7 @@ Som id används cart-id. Återfås genom att först visa alla kundkorgar (US-1.8
 
 ### 1.11. Som användare vill jag kunna uppdatera kundkorg ###
 Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg identifieras i anrop med sitt id (US-1.8). Uppdateringar skickas som body-request.
-#### PUT - /cart/<cartID>
+#### PUT - /cart/'cartID'
 ###### Request
 ```
 		{
@@ -556,7 +556,7 @@ Formatet för produktegenskaperna title, desc, price kontrolleras
 ``` 
 
 ### 2.4. Som admin vill jag kunna ta bort en produkt från menyn ###
-#### DELETE - /menu/<title> ####
+#### DELETE - /menu/'title' ####
 ##### Response #####
 ```
 {
@@ -601,7 +601,7 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 ```
 ### 2.7. Som admin vill jag kunna ta bort kampanjerbjudande från databas. ###
 
-#### DELETE - /admin/offering/<id> #### 
+#### DELETE - /admin/offering/'id' #### 
 ##### Response #####
 ```
 [
@@ -638,7 +638,7 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 }
 ```
 ### 3.2. Användare som ej är inloggad nekas se orderhistorik . ###
-#### GET - /orders/<customerId>  
+#### GET - /orders/'customerId'  
 ##### Response
 ```
 {
