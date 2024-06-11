@@ -1,3 +1,10 @@
+//  The cart controller serves the cart database. Following functions are defined here. 
+//  Get all carts from cart database to show the info.
+//  Find a specific cart from the database by entering cart-id
+//  Create a new cart. When customer selects a product from the menu, a new cart is created.
+//  An existing cart can be updated by first identifying it with cart-id.
+//  Remove a cart from database. 
+
 import db from '../database/database.js';
 
 //Show content in cart database
@@ -102,7 +109,7 @@ async function updateCart(cartId, cart) {
 }
 
 
-  // Delete cart by id
+  // Delete cart by cart-id
 
   function deleteCart(id){
     db.cart.remove({_id:id});

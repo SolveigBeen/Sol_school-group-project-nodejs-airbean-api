@@ -1,3 +1,5 @@
+//This route handles requests regarding the menu. Some of the functions require that the user is logged in with "admin"role.
+
 import { Router } from "express";
 import { getAllProducts, createMenuItem , findMenuItemByTitle, updateMenuItem, deleteMenuItem} from "../controller/menu.js";
 import {menuItemSchema, updateMenuItemSchema} from "../models/menuSchema.js";
@@ -75,7 +77,7 @@ router.delete('/:title', checkAdmin, async(req,res)=>{
     }
 //Response include the name of deleted item, retreived from the url-input.
     await deleteMenuItem(req.params.title);
-    res.json({ message: "Menu item deleted successfully", item:req.params.title });
+    res.json({ message: "Menu item deleted successfully", item:menuItem });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete menu item', details: error.message });
   }
