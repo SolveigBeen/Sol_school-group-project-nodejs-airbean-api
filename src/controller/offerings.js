@@ -1,3 +1,8 @@
+//  The offerings controller serves the cart database. Following functions are defined here.
+//  Create a new offering.
+//  Fetch all offerings availible in offerings database.
+//  Remove an offering from database.
+
 import db from '../database/database.js';
 
 const createOffering = async(offering)=> {

@@ -1,3 +1,10 @@
+// Menu controller serves the menu.db and provides following actions:
+//  Get all products from menu
+//  Add a new product to menu
+//  Find a product from its title. This is used when updating a specific product in the menu. 
+//  Update a product, eg to change price. 
+//  Remove a product from the menu
+
 import db from '../database/database.js';
 
 // Function to show the menu

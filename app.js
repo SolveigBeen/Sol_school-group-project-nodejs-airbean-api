@@ -5,10 +5,7 @@ import ordersRouter from "./src/routes/orders.js";
 import menuRouter from "./src/routes/menu.js";
 import companyRouter from "./src/routes/info.js";
 import adminRouter from "./src/routes/admin.js";
-//import loggerMiddleware from "./src/middleware/logger.js";
 import loggerMiddleware from "./src/middleware/logger.js"; 
-
-
 import notFoundMiddleware from "./src/middleware/notFound.js";
 import errorHandlerMiddleware from "./src/middleware/errorHandler.js";
 

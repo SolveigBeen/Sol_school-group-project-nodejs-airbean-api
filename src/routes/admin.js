@@ -1,3 +1,5 @@
+//  This route is only available for users with "admin"-role. The route /offerings can create special offerings with combinations of products from the menu.
+
 import { Router } from "express";
 import {createOffering, getAllOfferings, deleteOffering} from '../controller/offerings.js';
 import db from '../database/database.js';
@@ -5,7 +7,7 @@ import {checkAdmin} from '../middleware/auth.js';
 
 
 const router = Router();
-router.use(checkAdmin);
+router.use(checkAdmin);  // ensure that following functions only are available for users logged in with role= "admin".
 
 // Endpoint for adding a new offering
 router.post('/offering', async (req, res) => {

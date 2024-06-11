@@ -29,8 +29,8 @@ router.post("/logout", logout);
 
 // Endpoint for delete user account
 router.delete("/delete/:id",  (req, res)=> {
-    deleteUser(req.params.id);
-    res.json({ message : "User removed from database" });
+   deleteUser(req.params.id);
+   res.json({ message : "User removed from database" });
   })
   
 
