@@ -4,6 +4,7 @@
 Examinerande uppgift i kurs Backend med NodeJs för YH utbildning Frontendutveckling på Folkuniversitetet.
 Uppgiften består av två delar, en första del som görs i grupp och en andra del som görs individuellt.
 
+
 ### Del 1 ###
 
 Utveckling av backend funktionalitet för ett API till en webbapp kallad Airbean. 
@@ -40,21 +41,29 @@ APIt använder följande databaser:
 * company
 
 ### Del 2 ###
-* Följande funktioner ska kunna göras endast av person med 'admin'rättighet:
+Följande funktioner ska kunna göras endast av person med 'admin'rättighet:
   
 ####  Meny ####
-    * Nya produkter ska kunna läggas till i menyn. Egenskapen 'createdAt' ska läggas till
-    * Befintliga produkter i menyn ska kunna modifieras. Egenskapen 'modifeidAt' ska läggas till
-    * Produkt från menyn ska kunna deletas.
-    * Felmeddelande ska returneras vid behov.
+* Nya produkter ska kunna läggas till i menyn. Egenskapen 'createdAt' ska läggas till
+* Befintliga produkter i menyn ska kunna modifieras. Egenskapen 'modifeidAt' ska läggas till
+* Produkt från menyn ska kunna deletas.
+* Felmeddelande ska returneras vid behov.
     
 ####  Kampanjerbjudande ####
-    * Kampanjerbjudande ska kunna skapas och sparas i egen databas.
-    * Varor i kampanjerbjudande måste valideras.
+* Kampanjerbjudande ska kunna skapas och sparas i egen databas.
+* Varor i kampanjerbjudande måste valideras.
 
  Följande databas har lagts till:
 * offerings   -  namn på varor, pris, id
 
+## Om kodmiljön ##
+Node.js används som körmiljö. 
+
+Modulen Express har installerats med npm. 
+
+E26-import av moduler används. 
+
+Port 8000 används för att testköra applikationen
 
 ## Installation ##
 
@@ -406,7 +415,7 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
 ```
 
 ### 1.13. Som användare vill jag få information om när ordern levereras. ###
-#### GET - /orders/confirmation/<cartId>  
+#### GET - /orders/confirmation/'orderId'  
 ##### Response
 ```
 {
@@ -430,7 +439,7 @@ Uppdatering gäller lägga till vara, ta bort vara, eller ändra antal. Kundkorg
 
 ### 1.14. Som inloggad användare ska jag kunna se orderhistorik för alla tidigare köp jag gjort. ###
 Logga in som i punkt 2. Kundid används som identifiering i URL.  (Kan hämtas från US 1.5)
-#### GET - /orders/<customerId>  
+#### GET - /orders/'customerId'  
 ##### Response
 ```
 {
@@ -597,7 +606,14 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 ```
 [
 {
-	"message": "Offering deleted successfully"
+	"message": "Menu item deleted successfully",
+	"item": {
+		"title": "Adolf Bakelse",
+		"desc": "Göteborgarens nationalbakelse, med Gustav Adolf i choklad.",
+		"price": 45,
+		"createdAt": "2024-06-11T06:46:11.940Z",
+		"_id": "A1hpGRQmUhDQTFN2"
+	}
 }
 ]
 ```
@@ -640,6 +656,24 @@ Produkter som ingår valideras att dessa produkter finns i menyn.
 	"success": false,
 	"message": "You need to be an admin to perform this action",
 	"status": 401
+}
+```
+
+### 3.4. Endast produkter som finns i menyn kan läggas in i kampanjerbjudande. ###
+#### POST - /admin/offering 
+##### Request
+```
+{
+	"title": "Kungligt",
+	"product_1":"Prinsesstårta",
+	"product_2":"Mocha",
+	"price":40
+	}
+```
+##### Response
+```
+{
+	"error": "One or more products are not available"
 }
 ```
   
